@@ -8,19 +8,20 @@
 class inventory{
     int max_item_amount;
     int space_taken = 0;
-    vector<item> item_list_vec;
+    vector<item *> item_list_vec;
     unordered_map<string, int> item_list;
     int x = 780, y, width = 100, height;
     number_input item_space, item_amount, attack_points, damage_points;
     text_input item_name;
     button add_item_button, delete_item_button, add_weapon_button;
-    int next_item_spot;
+    int next_item_spot = 0;
     attacks * attacks1;
     public:
     inventory(int y, int max_item_amount, attacks * attacks1);
     void update();
     void add_item();
-    void delete_item();
+    void delete_item(weapon weapon_to_delete);
+    void delete_item(string item_to_delete);
     void remove_item();
     void draw();
 };

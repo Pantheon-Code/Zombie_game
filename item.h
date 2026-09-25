@@ -7,14 +7,15 @@ class item{
     protected:
     int space;
     string name;
+    bool in_inventory = true;
     int x, y;
     int width = 100, height;
     Color color = GREEN;
     public:
-    item();
     item(int x, int y, int space, string name);
     string get_name();
     int get_height();
+    bool get_in_inventory();
     void shift(int y);
     void draw();
 };
