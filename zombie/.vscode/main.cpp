@@ -21,6 +21,7 @@ int main(){
     player player1(bro, yo, 10, 10);
     attacks attacks1;
     inventory inventory1(50, 5, &attacks1);
+    attacks1.set_inventory(&inventory1);
     // change_player_menu change_player_menu1;
     while(WindowShouldClose() == false){
         mouse_position = GetMousePosition();

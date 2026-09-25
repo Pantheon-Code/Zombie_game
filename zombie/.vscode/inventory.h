@@ -3,7 +3,10 @@
 #include "number_input.h"
 #include "text_input.h"
 #include "button.h"
-#include "attacks.h"
+#include "weapon.h"
+
+
+class attacks;
 
 class inventory{
     int max_item_amount;

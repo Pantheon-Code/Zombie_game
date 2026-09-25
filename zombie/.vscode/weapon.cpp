@@ -14,7 +14,6 @@ item(weapon_to_copy.x, weapon_to_copy.y, weapon_to_copy.space, weapon_to_copy.na
     this->damage = weapon_to_copy.damage;
     this->height = weapon_to_copy.height;
     this->color = weapon_to_copy.color;
-    this->deleted = weapon_to_copy.deleted;
 }
 
 void weapon::change_position(int y){
@@ -23,14 +22,6 @@ void weapon::change_position(int y){
 
 void weapon::change_inventory(){
     this->height = 30;
-}
-
-void weapon::change_deleted(bool new_deleted){
-    this->deleted = new_deleted;
-}
-
-bool weapon::get_deleted(){
-    return deleted;
 }
 
 void weapon::draw(){

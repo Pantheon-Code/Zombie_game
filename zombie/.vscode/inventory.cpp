@@ -1,4 +1,6 @@
 #include "inventory.h"
+#include "attacks.h"
+
 
 inventory::inventory(int y, int max_item_amount, attacks * attacks1) : 
     item_name(Rectangle{(float)this->x, (float)y, 185.0f, 20.0f}) ,
@@ -28,17 +30,7 @@ void inventory::update(){
     if(this->delete_item_button.update(GetMousePosition())){
         this->delete_item(item_name.get_edit_input());
     }
-    if(attacks1->get_recently_equiped()){
-        //cout << "YOOOOOOO";
-        weapon * to_delete = attacks1->get_recently_equiped();
-        if(to_delete->get_deleted()){
-            cout << "YOOO";
-            //THIS ONE IS ERROR
-            to_delete->change_deleted(false);
-            delete_item(*to_delete);
-            
-        }
-    }
+
 }
 
 void inventory::add_item(){
