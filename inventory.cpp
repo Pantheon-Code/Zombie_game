@@ -26,27 +26,42 @@ void inventory::update(){
         this->add_item();
     }
     if(this->delete_item_button.update(GetMousePosition())){
-        this->delete_item();
+        this->delete_item(item_name.get_edit_input());
     }
-
+    if(attacks1->get_recently_equiped()){
+        //cout << "YOOOOOOO";
+        weapon * to_delete = attacks1->get_recently_equiped();
+        if(to_delete->get_deleted()){
+            cout << "YOOO";
+            //THIS ONE IS ERROR
+            to_delete->change_deleted(false);
+            delete_item(*to_delete);
+            
+        }
+    }
 }
 
 void inventory::add_item(){
     if(this->item_list.count(item_name.get_edit_input())){
         return;
     }
-    if(atoi(this->attack_points.get_edit_input())){
-        attacks1->add_weapon(atoi(item_space.get_edit_input()), 
-            this->item_name.get_edit_input(), atoi(this->attack_points.get_edit_input()), 
-            atoi(this->damage_points.get_edit_input()));
-    }
     int item_space_number = atoi(item_space.get_edit_input());
     if(item_space_number && item_space_number + this->space_taken <= this->max_item_amount){
         this->space_taken += item_space_number;
-        item item1(this->x, this->next_item_spot, item_space_number, item_name.get_edit_input());
         this->item_list.emplace(this->item_name.get_edit_input(), this->item_list_vec.size());
-        this->item_list_vec.push_back(item1);
-        this->next_item_spot += 30 * item_space_number + 10 * (item_space_number);
+        if(atoi(this->attack_points.get_edit_input())){
+            this->item_list_vec.push_back(attacks1->add_weapon(this->x, this->next_item_spot, item_space_number, 
+                this->item_name.get_edit_input(), atoi(this->attack_points.get_edit_input()), 
+                atoi(this->damage_points.get_edit_input())));
+                cout << "WEAPON: " << ((30 * item_space_number) + (10 * item_space_number));
+        }
+        else{
+            item * item1 = new item(this->x, this->next_item_spot, item_space_number, item_name.get_edit_input());
+            this->item_list_vec.push_back(item1);
+            cout << "ITEM: " << ((30 * item_space_number) + (10 * item_space_number));
+        }
+        this->next_item_spot += (30 * item_space_number) + (10 * item_space_number);
+        cout << "next item spot: " << next_item_spot;
         item_name.delete_text();
         item_space.delete_text();
         item_amount.delete_text();
@@ -54,30 +69,41 @@ void inventory::add_item(){
     }
 }
 
-void inventory::delete_item(){
-    string item_to_delete = item_name.get_edit_input();
+
+void inventory::delete_item(string item_to_delete){
     if(!this->item_list.count(item_to_delete)){
         return;
     }
-    this->attacks1->delete_weapon(item_to_delete);
-    cout << "name: " << item_to_delete;
     int item_to_delete_index = this->item_list[item_to_delete];
-    cout << "item index: "  << item_to_delete_index;
-    int item_to_delete_height = this->item_list_vec[this->item_list[item_to_delete]].get_height();
-    cout << "item height: " << item_to_delete_height;
-    for(int i = item_to_delete_index + 1; i < this->item_list_vec.size(); i++){
-        this->item_list_vec[i].shift(item_to_delete_height + 10);
-    }
+    int item_to_delete_height = this->item_list_vec[this->item_list[item_to_delete]]->get_height();
+    this->attacks1->delete_weapon(item_to_delete);
     this->next_item_spot -= item_to_delete_height + 10;
-    cout << "Next item spot: " << this->next_item_spot;
     this->space_taken -= item_to_delete_height / 40 + 1;
-    cout << "space taken: " << this->space_taken;
     this->item_list_vec.erase(this->item_list_vec.begin() + item_to_delete_index);
     for(int i = item_to_delete_index; i < this->item_list_vec.size(); i++){
-        this->item_list[this->item_list_vec[i].get_name()] = this->item_list[this->item_list_vec[i].get_name()] - 1;
+        this->item_list[this->item_list_vec[i]->get_name()] = this->item_list[this->item_list_vec[i]->get_name()] - 1;
+        this->item_list_vec[i]->shift(item_to_delete_height + 10);
     }
     this->item_list.erase(item_to_delete);
+    
+}
 
+void inventory::delete_item(weapon weapon_to_delete){
+    string item_to_delete = weapon_to_delete.get_name();
+    cout << item_to_delete;
+    int item_to_delete_index = this->item_list[item_to_delete];
+    cout << item_to_delete_index;
+    int item_to_delete_height = weapon_to_delete.get_height();
+    cout << item_to_delete_height;
+    this->next_item_spot -= item_to_delete_height + 10;
+    this->space_taken -= item_to_delete_height / 40 + 1;
+    this->item_list_vec.erase(this->item_list_vec.begin() + item_to_delete_index);
+    for(int i = item_to_delete_index; i < this->item_list_vec.size(); i++){
+        this->item_list[this->item_list_vec[i]->get_name()] = this->item_list[this->item_list_vec[i]->get_name()] - 1;
+        this->item_list_vec[i]->shift(item_to_delete_height + 10);
+    }
+    this->item_list.erase(item_to_delete);
+    cout << "BROO";
 }
 
 void inventory::draw(){
@@ -95,8 +121,8 @@ void inventory::draw(){
     this->delete_item_button.draw();
     this->add_weapon_button.draw();
 
-    for(item item1: this->item_list_vec){
-        item1.draw();
+    for(item * item1: this->item_list_vec){
+        if(item1) item1->draw();
     }
 
 

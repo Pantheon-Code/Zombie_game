@@ -1,8 +1,5 @@
 #include "item.h"
 
-item::item() : x(1) , y(1), space(1), name("bro"){}
-
-
 item::item(int x, int y, int space, string name){
     this->space = space;
     this->name = name;
@@ -18,6 +15,10 @@ string item::get_name(){
 
 int item::get_height(){
     return height;
+}
+
+bool item::get_in_inventory(){
+    return in_inventory;
 }
 
 void item::shift(int height){
