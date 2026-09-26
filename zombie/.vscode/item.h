@@ -16,6 +16,7 @@ class item{
     string get_name();
     int get_height();
     bool get_in_inventory();
+    int get_space();
     void shift(int y);
     void draw();
 };

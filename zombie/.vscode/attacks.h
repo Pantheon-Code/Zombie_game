@@ -15,7 +15,7 @@ class attacks{
         int x = 780, y = 500;
         float width = 185.0f, height = 20.0f;
         text_input weapon_name;
-        button equip_weapon_button, dequip_weapon_button;
+        button equip_weapon_button, unequip_weapon_button;
         static const int equipable_weapons_amount = 3;
         vector<weapon *> weapons_vec;
         unordered_map<string, int> weapons;
@@ -30,4 +30,5 @@ class attacks{
         void equip_weapon();
         void unequip_weapon(weapon weapon_to_unequip);
         void draw();
+        ~attacks();
 };

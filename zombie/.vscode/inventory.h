@@ -23,8 +23,10 @@ class inventory{
     inventory(int y, int max_item_amount, attacks * attacks1);
     void update();
     void add_item();
+    void add_item(weapon weapon_to_add);
     void delete_item(weapon weapon_to_delete);
     void delete_item(string item_to_delete);
     void remove_item();
     void draw();
+    ~inventory();
 };

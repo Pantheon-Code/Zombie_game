@@ -4,7 +4,7 @@
 
 attacks::attacks() : weapon_name(Rectangle{(float)this->x, (float)this->y, this->width, this->height}),
 equip_weapon_button(this->x + this->width + 20, this->y, 20, 20, GREEN, "Equip Weapon", 20),
-dequip_weapon_button(this->x + this->width + 50, this->y, 20, 20, GREEN, "Equip Weapon", 20){
+unequip_weapon_button(this->x + this->width + 50, this->y, 20, 20, GREEN, "Equip Weapon", 20){
     for(weapon * & weapon1: this->three_weapons){
         weapon1 = nullptr;
     }
@@ -18,6 +18,11 @@ void attacks::update(){
     this->weapon_name.update();
     if(this->equip_weapon_button.update(GetMousePosition())){
         this->equip_weapon();
+    }
+    if(this->unequip_weapon_button.update(GetMousePosition())){
+        if(this->weapons.count(this->weapon_name.get_edit_input())){
+            this->unequip_weapon(*this->weapons_vec[this->weapons[this->weapon_name.get_edit_input()]]);
+        }
     }
 }
 
@@ -50,9 +55,8 @@ void attacks::equip_weapon(){
             if(!this->three_weapons[i]){
                 weapon recently_equiped(*this->weapons_vec[this->weapons[weapon_to_equip]]);
                 this->three_weapons[i] = new weapon(*this->weapons_vec[this->weapons[weapon_to_equip]]);
-                this->three_weapons[i]->change_position(this->y + 50 + (i * 40));
+                this->three_weapons[i]->change_position(this->y + 50 + (i * 25));
                 this->three_weapons[i]->change_inventory();
-                delete_weapon(weapon_to_equip);
                 this->inventory1->delete_item(recently_equiped);
                 break;
             }
@@ -62,7 +66,10 @@ void attacks::equip_weapon(){
 
 void attacks::unequip_weapon(weapon weapon_to_unequip){
     for(int i = 0; i < equipable_weapons_amount; i++){
-        if(this->three_weapons[i]->get_name() == weapon_to_unequip.get_name()){
+        if(this->three_weapons[i] && this->three_weapons[i]->get_name() == weapon_to_unequip.get_name()){
+            delete_weapon(weapon_to_unequip.get_name());
+            this->inventory1->add_item(*this->three_weapons[i]);
+            delete this->three_weapons[i];
             this->three_weapons[i] = nullptr;
         }
     }
@@ -79,5 +86,21 @@ void attacks::draw(){
     // }
     this->weapon_name.draw();
     this->equip_weapon_button.draw();
+    this->unequip_weapon_button.draw();
     DrawText(TextFormat("Weapon Name: "), this->x, this->y - 20, 15, WHITE);
+}
+
+attacks::~attacks(){
+    for(weapon * &weapon1: this->weapons_vec){
+        delete weapon1;
+    }
+    this->weapons_vec.clear();
+
+    // delete inventory1;
+    // inventory1 = nullptr;
+
+    for(weapon * &weapon1: this->three_weapons){
+        delete weapon1;
+        weapon1 = nullptr;
+    }
 }

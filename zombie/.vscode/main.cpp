@@ -16,9 +16,9 @@ int main(){
 
     SetTargetFPS(60);
     Vector2 mouse_position;
-    int bro[] = {1,1,1,1,1,1};
-    int yo[] = {1,1,1,1,1,1};
-    player player1(bro, yo, 10, 10);
+    int health[] = {17 , 3,1,1,1,1};
+    int abilities[] = {14, 12, 10, 13, 15, 8};
+    player player1(health, abilities, 10, 10);
     attacks attacks1;
     inventory inventory1(50, 5, &attacks1);
     attacks1.set_inventory(&inventory1);
