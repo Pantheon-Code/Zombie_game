@@ -21,6 +21,10 @@ bool item::get_in_inventory(){
     return in_inventory;
 }
 
+int item::get_y(){
+    return y;
+}
+
 int item::get_space(){
     return space;
 }

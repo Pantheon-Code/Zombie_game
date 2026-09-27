@@ -8,6 +8,7 @@ unequip_weapon_button(this->x + this->width + 50, this->y, 20, 20, GREEN, "Equip
     for(weapon * & weapon1: this->three_weapons){
         weapon1 = nullptr;
     }
+
 }
 
 void attacks::set_inventory(inventory * inventory1){
@@ -20,59 +21,52 @@ void attacks::update(){
         this->equip_weapon();
     }
     if(this->unequip_weapon_button.update(GetMousePosition())){
-        if(this->weapons.count(this->weapon_name.get_edit_input())){
-            this->unequip_weapon(*this->weapons_vec[this->weapons[this->weapon_name.get_edit_input()]]);
-        }
+        this->unequip_weapon();
     }
-}
-
-weapon * attacks::add_weapon(int x, int y, int space, string name, int attack, int damage){
-    weapon * new_weapon = new weapon(x, y, space, name, attack, damage);
-    this->weapons.emplace(new_weapon->get_name(), this->weapons_vec.size());
-    this->weapons_vec.push_back(new_weapon);
-    return new_weapon;
-}
-
-void attacks::delete_weapon(string weapon_name){
-    if(!this->weapons.count(weapon_name)){
-        return;
-    }
-    delete this->weapons_vec[this->weapons[weapon_name]];
-    this->weapons_vec[this->weapons[weapon_name]] = nullptr;
-    this->weapons_vec.erase(this->weapons_vec.begin() + this->weapons[weapon_name]);
-    int deleted_weapon_index = this->weapons[weapon_name];
-    this->weapons.erase(weapon_name);
-    for(int i = deleted_weapon_index; i < this->weapons_vec.size(); i++){
-        this->weapons[this->weapons_vec[i]->get_name()] = this->weapons[this->weapons_vec[i]->get_name()] - 1;
-    }
-
 }
 
 void attacks::equip_weapon(){
+    cout << "HERE?";
     string weapon_to_equip = this->weapon_name.get_edit_input();
-    if(this->weapons.count(weapon_to_equip)){
+    cout << weapon_to_equip;
+    if(this->inventory1->get_weapon_map()->count(weapon_to_equip)){
+        cout << "HELLO?";
         for(int i = 0; i < equipable_weapons_amount; i++){
-            if(!this->three_weapons[i]){
-                weapon recently_equiped(*this->weapons_vec[this->weapons[weapon_to_equip]]);
-                this->three_weapons[i] = new weapon(*this->weapons_vec[this->weapons[weapon_to_equip]]);
+            if(!this->three_weapons[i] && !((*this->inventory1->get_weapon_vec())[(*this->inventory1->get_weapon_map())[weapon_to_equip]]->get_equiped())){
+                cout << "YOOO";
+                inventory1->remove_item(weapon_to_equip);
+                this->three_weapons[i] = (*this->inventory1->get_weapon_vec())[(*this->inventory1->get_weapon_map())[weapon_to_equip]];
                 this->three_weapons[i]->change_position(this->y + 50 + (i * 25));
-                this->three_weapons[i]->change_inventory();
-                this->inventory1->delete_item(recently_equiped);
+                this->three_weapons[i]->equip();
                 break;
             }
         }
     }
 }
 
-void attacks::unequip_weapon(weapon weapon_to_unequip){
-    for(int i = 0; i < equipable_weapons_amount; i++){
-        if(this->three_weapons[i] && this->three_weapons[i]->get_name() == weapon_to_unequip.get_name()){
-            delete_weapon(weapon_to_unequip.get_name());
-            this->inventory1->add_item(*this->three_weapons[i]);
-            delete this->three_weapons[i];
-            this->three_weapons[i] = nullptr;
+void attacks::unequip_weapon(){
+
+    if(this->inventory1->get_weapon_map()->count(this->weapon_name.get_edit_input())){
+      
+        for(int i = 0; i < equipable_weapons_amount; i++){
+       
+            if(this->three_weapons[i] && this->three_weapons[i]->get_name() == this->weapon_name.get_edit_input()){
+                this->three_weapons[i]->unequip();
+                this->inventory1->add_back_item(this->weapon_name.get_edit_input());
+           
+                this->three_weapons[i] = nullptr; 
+            }
         }
     }
+}
+
+void attacks::delete_weapon(string weapon_name){
+    int item_to_delete_index = this->weapon_map[weapon_name];
+    this->weapon_vec.erase(this->weapon_vec.begin() + item_to_delete_index);
+    for(int i = item_to_delete_index; i < this->weapon_vec.size(); i++){
+        this->weapon_map[this->weapon_vec[i]->get_name()] = this->weapon_map[this->weapon_vec[i]->get_name()] - 1;
+    }
+    this->weapon_map.erase(weapon_name);
 }
 
 
@@ -81,9 +75,6 @@ void attacks::draw(){
         if(weapon1) weapon1->draw();
     }
 
-    // for(weapon weapon1: this->weapons_vec){
-    //     weapon1.draw();
-    // }
     this->weapon_name.draw();
     this->equip_weapon_button.draw();
     this->unequip_weapon_button.draw();
@@ -91,14 +82,6 @@ void attacks::draw(){
 }
 
 attacks::~attacks(){
-    for(weapon * &weapon1: this->weapons_vec){
-        delete weapon1;
-    }
-    this->weapons_vec.clear();
-
-    // delete inventory1;
-    // inventory1 = nullptr;
-
     for(weapon * &weapon1: this->three_weapons){
         delete weapon1;
         weapon1 = nullptr;

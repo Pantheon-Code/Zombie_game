@@ -5,30 +5,27 @@ weapon::weapon(int x, int y, int space, string name, int attack, int damage) : i
     this->attack = attack;
     this->damage = damage;
     this->color = GRAY;
+    this->item_type = "weapon";
 }
 
-
-weapon::weapon(const weapon &weapon_to_copy): 
-item(weapon_to_copy.x, weapon_to_copy.y, weapon_to_copy.space, weapon_to_copy.name){
-    this->attack = weapon_to_copy.attack;
-    this->damage = weapon_to_copy.damage;
-    this->height = weapon_to_copy.height;
-    this->color = weapon_to_copy.color;
-}
 
 void weapon::change_position(int y){
     this->y = y;
 }
 
-void weapon::change_inventory(){
+void weapon::equip(){
     this->height = 20;
+    this->equiped = true;
 }
 
-void weapon::shoot(){
-    this->ammo_amount -= this->max_ammo_per_shot;
-    if(this->ammo_amount <= 0){
-        
-    }
+void weapon::unequip(){
+    this->equiped = false;
+    this->height = 20 * space + 5 * (space - 1);
+    if(!this->height) this->height = 20;
+}
+
+bool weapon::get_equiped(){
+    return equiped;
 }
 
 int weapon::get_attack_points(){

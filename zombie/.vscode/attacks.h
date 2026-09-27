@@ -17,10 +17,10 @@ class attacks{
         text_input weapon_name;
         button equip_weapon_button, unequip_weapon_button;
         static const int equipable_weapons_amount = 3;
-        vector<weapon *> weapons_vec;
-        unordered_map<string, int> weapons;
         weapon * three_weapons[equipable_weapons_amount];
         inventory * inventory1;
+        vector<weapon *> weapon_vec;
+        unordered_map<string, int> weapon_map;
     public:
         attacks();
         void set_inventory(inventory * inventory1);
@@ -28,7 +28,7 @@ class attacks{
         weapon * add_weapon(int x, int y, int space, string name, int attack, int damage);
         void delete_weapon(string weapon_name);
         void equip_weapon();
-        void unequip_weapon(weapon weapon_to_unequip);
+        void unequip_weapon();
         void draw();
         ~attacks();
 };
