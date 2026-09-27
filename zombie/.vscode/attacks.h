@@ -26,7 +26,7 @@ class attacks{
         void set_inventory(inventory * inventory1);
         void update();
         weapon * add_weapon(int x, int y, int space, string name, int attack, int damage);
-        void delete_weapon(string weapon_name);
+        // void delete_weapon(string weapon_name);
         void equip_weapon();
         void unequip_weapon();
         void draw();

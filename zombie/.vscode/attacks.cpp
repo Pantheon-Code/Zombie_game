@@ -60,14 +60,14 @@ void attacks::unequip_weapon(){
     }
 }
 
-void attacks::delete_weapon(string weapon_name){
-    int item_to_delete_index = this->weapon_map[weapon_name];
-    this->weapon_vec.erase(this->weapon_vec.begin() + item_to_delete_index);
-    for(int i = item_to_delete_index; i < this->weapon_vec.size(); i++){
-        this->weapon_map[this->weapon_vec[i]->get_name()] = this->weapon_map[this->weapon_vec[i]->get_name()] - 1;
-    }
-    this->weapon_map.erase(weapon_name);
-}
+// void attacks::delete_weapon(string weapon_name){
+//     int item_to_delete_index = this->weapon_map[weapon_name];
+//     this->weapon_vec.erase(this->weapon_vec.begin() + item_to_delete_index);
+//     for(int i = item_to_delete_index; i < this->weapon_vec.size(); i++){
+//         this->weapon_map[this->weapon_vec[i]->get_name()] = this->weapon_map[this->weapon_vec[i]->get_name()] - 1;
+//     }
+//     this->weapon_map.erase(weapon_name);
+// }
 
 
 void attacks::draw(){

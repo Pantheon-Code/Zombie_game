@@ -88,7 +88,14 @@ void inventory::delete_item(string item_to_delete){
     }
     int item_to_delete_index = this->item_map[item_to_delete];
     int item_to_delete_height = this->item_vec[this->item_map[item_to_delete]]->get_height();
-    this->attacks1->delete_weapon(item_to_delete);
+    if(this->weapon_map.count(item_to_delete)){
+        this->weapon_vec.erase(this->weapon_vec.begin() + item_to_delete_index);
+        for(int i = item_to_delete_index; i < this->weapon_vec.size(); i++){
+            this->weapon_map[this->weapon_vec[i]->get_name()] = this->weapon_map[this->weapon_vec[i]->get_name()] - 1;
+            this->weapon_vec[i]->shift(item_to_delete_height + 5);
+        }
+        this->weapon_map.erase(item_to_delete);
+    }
     this->next_item_spot -= item_to_delete_height + 5;
     this->space_taken -= item_to_delete_height / 25 + 1;
     delete this->item_vec[item_to_delete_index];
