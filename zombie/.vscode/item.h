@@ -10,12 +10,17 @@ class item{
     bool in_inventory = true;
     int x, y;
     int width = 100, height;
+    string item_type = "item";
     Color color = GREEN;
     public:
     item(int x, int y, int space, string name);
     string get_name();
     int get_height();
-    bool get_in_inventory();
+    int get_space();
+    void get_in_inventory();
+    void get_out_inventory();
+    virtual void change_position(int x, int y);
+    string get_item_type();
     void shift(int y);
-    void draw();
+    virtual void draw();
 };

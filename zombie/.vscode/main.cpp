@@ -16,11 +16,9 @@ int main(){
 
     SetTargetFPS(60);
     Vector2 mouse_position;
-    int bro[] = {1,1,1,1,1,1};
-    int yo[] = {1,1,1,1,1,1};
-    player player1(bro, yo, 10, 10);
-    attacks attacks1;
-    inventory inventory1(50, 5, &attacks1);
+    player player1;
+    inventory inventory1;
+    attacks attacks1(&inventory1);
     // change_player_menu change_player_menu1;
     while(WindowShouldClose() == false){
         mouse_position = GetMousePosition();

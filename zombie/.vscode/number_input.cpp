@@ -20,7 +20,7 @@ void number_input::update(){
         SetMouseCursor(MOUSE_CURSOR_IBEAM);
         this->key = GetCharPressed();
         while(this->key){
-            if((this->key >= 48) && (this->key <= 57) && (this->letter_count < this->max_char_num)){
+            if(((this->key >= 48) && (this->key <= 57) || this->key == 45)  && (this->letter_count < this->max_char_num)){
                 this->edit_input[letter_count] = (char)key;
                 this->edit_input[letter_count + 1] = '\0'; // Add null terminator at the end of the string
                 this->letter_count++;

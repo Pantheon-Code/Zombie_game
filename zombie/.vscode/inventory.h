@@ -1,27 +1,33 @@
 #pragma once
-#include "item.h"
+#include "item_node.h"
 #include "number_input.h"
 #include "text_input.h"
 #include "button.h"
-#include "attacks.h"
+
+
+class weapon;
+class item;
 
 class inventory{
-    int max_item_amount;
-    int space_taken = 0;
-    vector<item *> item_list_vec;
-    unordered_map<string, int> item_list;
-    int x = 780, y, width = 100, height;
-    number_input item_space, item_amount, attack_points, damage_points;
-    text_input item_name;
-    button add_item_button, delete_item_button, add_weapon_button;
-    int next_item_spot = 0;
-    attacks * attacks1;
+    int x = 15, y = 200, next_item_position = 225;
+    text_input * item_name = nullptr;
+    number_input * item_space = nullptr, * attack_roll = nullptr, * amount = nullptr;
+    item_node * item_head = nullptr, * item_tail = nullptr;
+    button * add_button = nullptr, * delete_button = nullptr;
     public:
-    inventory(int y, int max_item_amount, attacks * attacks1);
+    inventory();
     void update();
     void add_item();
-    void delete_item(weapon weapon_to_delete);
-    void delete_item(string item_to_delete);
+    void delete_item();
+    void shift_items(int item_height, item_node * dummy_ptr1);
     void remove_item();
+    void draw_items();
+    void change_tail(item_node * new_tail);
+    void change_head(item_node * new_head);
+    void change_next_item_position(int next_item_position);
+    item_node * get_item_head();
+    item_node * get_item_tail();
+    int get_next_item_position();
     void draw();
+    ~inventory();
 };

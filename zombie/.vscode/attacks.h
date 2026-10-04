@@ -5,26 +5,22 @@
 #include <vector>
 #include <unordered_map>
 #include <iostream>
+#include "inventory.h"
 
 using namespace std;
 class attacks{
     private:
-        int x = 780, y = 500;
-        float width = 185.0f, height = 20.0f;
-        text_input weapon_name;
-        button equip_weapon_button, dequip_weapon_button;
-        static const int equipable_weapons_amount = 3;
-        vector<weapon *> weapons_vec;
-        unordered_map<string, int> weapons;
-        weapon * three_weapons[equipable_weapons_amount];
-        weapon * recently_equiped = nullptr;
+        int x = 505, y = 200;
+        text_input * weapon_input = nullptr;
+        button * equip_button = nullptr, * unequip_button = nullptr;
+        item_node * item_list[3] = {nullptr, nullptr, nullptr};
+        inventory * inventory1 = nullptr;
     public:
-        attacks();
+        attacks(inventory * inventory1);
         void update();
-        weapon * add_weapon(int x, int y, int space, string name, int attack, int damage);
-        void delete_weapon(string weapon_name);
+        item_node * delete_weapon(string weapon_name);
+        void add_weapon(item_node * weapon);
         void equip_weapon();
-        void unequip_weapon(weapon weapon_to_unequip);
-        weapon * get_recently_equiped();
+        void unequip_weapon();
         void draw();
 };

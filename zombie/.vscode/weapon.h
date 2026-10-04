@@ -1,18 +1,24 @@
 #pragma once
-#include "item.h"
+#include "button.h"
 #include <iostream>
+#include "item.h"
+
+class item_node;
+class inventory;
 
 class weapon : public item{
     private:
     int attack, damage;
-    bool deleted = false;
+    int ammo_amount = 0;
+    button * shoot;
+    string ammo_type = "9mm";
     public:
         weapon(int x, int y, int space, string name, int attack, int damage);
-        weapon(const weapon &weapon_to_copy);
-        weapon();
-        void change_position(int y);
-        void change_deleted(bool new_deleted);
-        bool get_deleted();
+        void change_position(int x, int y) override;
+        // void change_deleted(bool new_deleted);
+        // bool get_deleted();
+        void update(item_node * item_head, inventory * inventory1);
+        item_node * reload(item_node * item_head, inventory * inventory1);
         void change_inventory();
-        void draw();
+        void draw() override;
 };
