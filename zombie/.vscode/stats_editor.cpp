@@ -22,6 +22,10 @@ void stats_editor::add(){
     this->stat += num_to_add;
 }
 
+void stats_editor::add(int stat){
+    this->stat += stat;
+}
+
 void stats_editor::draw(){
     DrawText(TextFormat("%s: %i", this->name.c_str(), this->stat), this->x, this->y - 20, 15, WHITE);
     this->stats_input->draw();

@@ -4,12 +4,13 @@
 //#include "change_player_menu.h"
 #include "inventory.h"
 #include "attacks.h"
+#include "necessities.h"
 //g++ *.cpp -lraylib -framework IOKit -framework Cocoa -framework OpenGL
 using namespace std;
 
 int main(){
-    int screen_width = 1350;
-    int screen_height = 750;
+    int screen_width = 1400;
+    int screen_height = 775;
     int target_fps = 60;
 
     InitWindow(screen_width, screen_height, "Zombie Game");
@@ -19,6 +20,7 @@ int main(){
     player player1;
     inventory inventory1;
     attacks attacks1(&inventory1);
+    necessities necessities1(&inventory1);
     // change_player_menu change_player_menu1;
     while(WindowShouldClose() == false){
         mouse_position = GetMousePosition();
@@ -28,9 +30,11 @@ int main(){
         inventory1.update();
         player1.update();
         attacks1.update();
+        necessities1.update();
         player1.draw();
         inventory1.draw();
         attacks1.draw();
+        necessities1.draw();
         // change_player_menu1.draw();
         EndDrawing();
     }

@@ -4,14 +4,16 @@
 #include "text_input.h"
 #include "button.h"
 
-
 class weapon;
 class item;
+class food;
+class water;
 
 class inventory{
     int x = 15, y = 200, next_item_position = 225;
     text_input * item_name = nullptr;
-    number_input * item_space = nullptr, * attack_roll = nullptr, * amount = nullptr;
+    number_input * item_space = nullptr, * attack_roll = nullptr, * amount = nullptr, * hunger_restored = nullptr,
+        * thirst_quenched = nullptr;
     item_node * item_head = nullptr, * item_tail = nullptr;
     button * add_button = nullptr, * delete_button = nullptr;
     public:

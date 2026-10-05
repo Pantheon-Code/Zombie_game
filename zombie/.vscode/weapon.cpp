@@ -77,6 +77,8 @@ void weapon::draw(){
     if(!this->in_inventory) this->shoot->draw();
     // DrawRectangle(this->x, this->y, this->width, this->height, this->color);
     // DrawText(TextFormat("%s" ,this->name.c_str()), this->x, this->y + 10, 20, WHITE);
-    DrawText(TextFormat("%s: %i" ,this->ammo_type.c_str(), this->ammo_amount), this->x + this->width - 10, this->y + 10, 20, WHITE);
+    DrawRectangle(this->x, this->y, this->width, this->height, this->color);
+    DrawText(TextFormat("%s: %s: %i" ,this->name.c_str(), this->ammo_type.c_str(), this->ammo_amount), this->x, this->y, 20, WHITE);
+    // DrawText(TextFormat("%s: %i" ,this->ammo_type.c_str(), this->ammo_amount), this->x + this->width - 15, this->y, 20, WHITE);
 
 }

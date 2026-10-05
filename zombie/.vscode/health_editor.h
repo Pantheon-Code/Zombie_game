@@ -9,5 +9,8 @@ class health_editor: public stats_editor{
     health_editor(int x, int y, string name);
     void update();
     void add_max();
+    void add() override;
+    void add(int stat) override;
+    int get_max();
     void draw();
 };

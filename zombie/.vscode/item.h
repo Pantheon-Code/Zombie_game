@@ -21,6 +21,6 @@ class item{
     void get_out_inventory();
     virtual void change_position(int x, int y);
     string get_item_type();
-    void shift(int y);
+    virtual void shift(int y);
     virtual void draw();
 };

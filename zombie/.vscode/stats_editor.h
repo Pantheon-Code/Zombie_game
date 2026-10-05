@@ -17,6 +17,7 @@ class stats_editor{
     public:
     stats_editor(int x, int y, string name); 
     void update();
-    void add();
+    virtual void add();
+    virtual void add(int stat);
     void draw();
 };

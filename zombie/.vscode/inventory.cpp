@@ -1,14 +1,18 @@
 #include "inventory.h"
 #include "weapon.h"
 #include "ammo.h"
+#include "food.h"
+#include "water.h"
 
 inventory::inventory(){
     this->item_name = new text_input(Rectangle{(float)this->x, (float)this->y, 185, 20});
     this->item_space = new number_input(Rectangle{(float)this->x + 200, (float)this->y, 50, 20});
     this->attack_roll = new number_input(Rectangle{(float)this->x + 265, (float)this->y, 50, 20});
     this->amount = new number_input(Rectangle{(float)this->x + 330, (float)this->y, 50, 20});
-    this->add_button = new button(x + 395, y, 30, 15, GREEN, "ADD", 20);
-    this->delete_button = new button(x + 440, y, 30, 15, RED, "DELETE", 20);
+    this->hunger_restored = new number_input(Rectangle{(float)this->x + 395, (float)this->y, 50, 20});
+    this->thirst_quenched = new number_input(Rectangle{(float)this->x + 460, (float)this->y, 50, 20});
+    this->add_button = new button(x + 525, y, 30, 15, GREEN, "ADD", 20);
+    this->delete_button = new button(x + 570, y, 30, 15, RED, "DELETE", 20);
 }
 
 void inventory::update(){
@@ -16,6 +20,8 @@ void inventory::update(){
     this->item_space->update();
     this->attack_roll->update();
     this->amount->update();
+    this->hunger_restored->update();
+    this->thirst_quenched->update();
     if(this->add_button->update(GetMousePosition())){
         this->add_item();
     }
@@ -30,8 +36,16 @@ void inventory::add_item(){
     int new_item_space = atoi(this->item_space->get_edit_input());
     int new_item_attack = atoi(this->attack_roll->get_edit_input());
     int new_item_amount = atoi(this->amount->get_edit_input());
+    int new_item_hunger_restored = atoi(this->hunger_restored->get_edit_input());
+    int new_item_thirst_quenched = atoi(this->thirst_quenched->get_edit_input());
 
-    if(new_item_amount){
+    if(new_item_thirst_quenched){
+        new_item->item_stored = new water(this->x, next_item_position, new_item_space, new_item_name, new_item_thirst_quenched);
+    }
+    else if(new_item_hunger_restored){
+        new_item->item_stored = new food(this->x, next_item_position, new_item_space, new_item_name, new_item_hunger_restored);
+    }
+    else if(new_item_amount){
         new_item->item_stored = new ammo(this->x, next_item_position, new_item_space, new_item_name, new_item_amount);
     }
     else if(new_item_attack){
@@ -134,11 +148,15 @@ void inventory::draw(){
     DrawText(TextFormat("Space"), this->x + 200, this->y - 20, 15, WHITE);
     DrawText(TextFormat("Attack"), this->x + 265, this->y - 20, 15, WHITE);
     DrawText(TextFormat("Amount"), this->x + 325, this->y - 20, 15, WHITE);
+    DrawText(TextFormat("H R"), this->x + 395, this->y - 20, 15, WHITE);
+    DrawText(TextFormat("T Q"), this->x + 460, this->y - 20, 15, WHITE);
     DrawText(TextFormat("Inventory"), this->x, this->y - 50, 15, WHITE);
     this->item_name->draw();
     this->item_space->draw();
     this->attack_roll->draw();
     this->amount->draw();
+    this->hunger_restored->draw();
+    this->thirst_quenched->draw();
     this->add_button->draw();
     this->delete_button->draw();
     this->draw_items();
@@ -153,6 +171,10 @@ inventory::~inventory(){
     this->attack_roll = nullptr;
     delete this->amount;
     this->amount = nullptr;
+    delete this->hunger_restored;
+    this->hunger_restored = nullptr;
+    delete this->thirst_quenched;
+    this->thirst_quenched = nullptr;
     delete this->add_button;
     this->add_button = nullptr;
     delete this->delete_button;

@@ -16,6 +16,25 @@ void health_editor::add_max(){
     int max_to_add = atoi(this->stats_input->get_edit_input());
     this->max_health += max_to_add;
 }
+
+void health_editor::add(){
+    stats_editor::add();
+    if(this->stat > this->max_health){
+        this->stat -= this->stat - this->max_health;
+    }
+}
+
+void health_editor::add(int stat){
+    this->stat += stat;
+    if(this->stat > this->max_health){
+        this->stat -= this->stat - this->max_health;
+    }
+}
+
+int health_editor::get_max(){
+    return this->max_health;
+}
+
 void health_editor::draw(){
     DrawText(TextFormat("%s: %i/%i", this->name.c_str(), this->max_health, this->stat), this->x, this->y - 20, 15, WHITE);
     this->stats_input->draw();

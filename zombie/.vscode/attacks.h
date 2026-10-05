@@ -10,7 +10,7 @@
 using namespace std;
 class attacks{
     private:
-        int x = 505, y = 200;
+        int x = 630, y = 200;
         text_input * weapon_input = nullptr;
         button * equip_button = nullptr, * unequip_button = nullptr;
         item_node * item_list[3] = {nullptr, nullptr, nullptr};

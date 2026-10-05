@@ -68,7 +68,7 @@ void attacks::equip_weapon(){
             if(!this->item_list[i]){
                 this->item_list[i] = delete_weapon(weapon_to_equip);
                 if(this->item_list[i]){
-                    this->item_list[i]->item_stored->change_position(this->x, i * 25 + 400);
+                    this->item_list[i]->item_stored->change_position(this->x, i * 25 + this->y + 25);
                     this->item_list[i]->item_stored->get_in_inventory();
                 }
                 break;
