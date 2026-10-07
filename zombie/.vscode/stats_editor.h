@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 class number_input;
 
@@ -17,7 +19,10 @@ class stats_editor{
     public:
     stats_editor(int x, int y, string name); 
     void update();
+    virtual void read_file();
+    virtual void change_file();
     virtual void add();
     virtual void add(int stat);
     void draw();
+    ~stats_editor();
 };

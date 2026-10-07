@@ -1,5 +1,6 @@
 #pragma once
 #include "stats_editor.h"
+#include <sstream>
 
 class health_editor: public stats_editor{
     private:
@@ -8,6 +9,8 @@ class health_editor: public stats_editor{
     public:
     health_editor(int x, int y, string name);
     void update();
+    void read_file() override;
+    void change_file() override;
     void add_max();
     void add() override;
     void add(int stat) override;
