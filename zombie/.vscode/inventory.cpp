@@ -148,8 +148,8 @@ void inventory::draw(){
     DrawText(TextFormat("Space"), this->x + 200, this->y - 20, 15, WHITE);
     DrawText(TextFormat("Attack"), this->x + 265, this->y - 20, 15, WHITE);
     DrawText(TextFormat("Amount"), this->x + 325, this->y - 20, 15, WHITE);
-    DrawText(TextFormat("H R"), this->x + 395, this->y - 20, 15, WHITE);
-    DrawText(TextFormat("T Q"), this->x + 460, this->y - 20, 15, WHITE);
+    DrawText(TextFormat("Hunger"), this->x + 395, this->y - 20, 15, WHITE);
+    DrawText(TextFormat("Thirst"), this->x + 460, this->y - 20, 15, WHITE);
     DrawText(TextFormat("Inventory"), this->x, this->y - 50, 15, WHITE);
     this->item_name->draw();
     this->item_space->draw();
