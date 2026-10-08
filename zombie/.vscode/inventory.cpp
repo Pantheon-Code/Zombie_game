@@ -35,7 +35,7 @@ void inventory::read_file(){
     ifstream myFile(this->inventory_file);
     if(myFile.is_open()){
         string line;
-        while(getline(myFile, line)){
+        while(getline(myFile, line) && !line.empty()){
             stringstream ss(line);
             string item_type;
             getline(ss, item_type, ',');
@@ -52,7 +52,9 @@ void inventory::read_file(){
             else if(item_type == "food"){
                 new_item = food::read_file(ss);
             }
-            else new_item = water::read_file(ss);
+            else if(item_type == "water"){
+                new_item = water::read_file(ss);
+            }
             item_node * new_item_node = new item_node;
             new_item_node->item_stored = new_item;
             this->add_item(new_item_node);

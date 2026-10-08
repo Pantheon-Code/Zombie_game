@@ -39,6 +39,7 @@ int main(){
         EndDrawing();
     }
     inventory1.change_file();
+    attacks1.close_attacks();
 
     CloseWindow();
 }

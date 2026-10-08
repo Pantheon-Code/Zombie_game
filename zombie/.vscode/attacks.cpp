@@ -6,6 +6,7 @@ attacks::attacks(inventory * inventory1){
     this->equip_button = new button(x + 200, y, 30, 15, GREEN, "Equip", 20);
     this->unequip_button = new button(x + 245, y, 30, 15, GREEN, "UnEquip", 20);
     this->inventory1 = inventory1;
+    this->read_file();
 }
 
 void attacks::update(){
@@ -26,6 +27,50 @@ void attacks::update(){
             }
         }
     }
+}
+
+void attacks::read_file(){
+    for(int i = 0; i < 3; i++){
+        ifstream myFile(string("csv_files/") + "weapon" + to_string(i) + ".csv");
+        string line;
+        if(myFile.is_open()){     
+            if (getline(myFile, line) && !line.empty()) {
+                stringstream ss(line);
+                string type;
+                getline(ss, type, ',');
+                item_node * new_node = new item_node;
+                weapon * new_weapon = weapon::read_file(ss);
+                new_node->item_stored = new_weapon;
+                this->item_list[i] = new_node;
+                this->item_list[i]->item_stored->change_position(this->x, i * 25 + this->y + 25);
+                this->item_list[i]->item_stored->get_in_inventory();
+            }
+        }
+        myFile.close();                    
+    }
+    
+}
+
+void attacks::change_file(int i, item * added_weapon){
+    ofstream myFile(string("csv_files/") + "weapon" + to_string(i) + ".csv");
+    if(myFile.is_open()){
+        added_weapon->change_file(myFile);
+    }
+    
+    myFile.close();
+}
+
+void attacks::close_attacks(){
+    for(int i = 0; i < 3; i++){
+        if(this->item_list[i]){
+            this->change_file(i, this->item_list[i]->item_stored);
+        }  
+        else{
+            ofstream myFile(string("csv_files/") + "weapon" + to_string(i) + ".csv");
+            myFile.close();
+        }        
+    }
+    
 }
 
 item_node * attacks::delete_weapon(string weapon_to_equip){

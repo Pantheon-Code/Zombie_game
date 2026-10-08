@@ -12,7 +12,7 @@ int ammo::get_amount(){
 
 void ammo::draw(){
     item::draw();
-    DrawText(TextFormat("Amount: %i", this->amount), this->x + this->width - 10, this->y + 10, 20, WHITE);
+    DrawText(TextFormat("Amount: %i", this->amount), this->x + this->width - 10, this->y, 20, WHITE);
 }
 
 void ammo::change_file(ofstream & myFile){

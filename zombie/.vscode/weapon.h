@@ -21,6 +21,8 @@ class weapon : public item{
         item_node * reload(item_node * item_head, inventory * inventory1);
         void set_ammo(int ammo_amount);
         void change_inventory();
+        int get_attack();
+        int get_damage();
         void draw() override;
         virtual void change_file(ofstream & myFile) override;
         static weapon * read_file(stringstream & ss);

@@ -18,6 +18,9 @@ class attacks{
     public:
         attacks(inventory * inventory1);
         void update();
+        void read_file();
+        void change_file(int i, item * added_weapon);
+        void close_attacks();
         item_node * delete_weapon(string weapon_name);
         void add_weapon(item_node * weapon);
         void equip_weapon();

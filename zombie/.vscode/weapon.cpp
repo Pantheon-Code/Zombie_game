@@ -65,6 +65,14 @@ void weapon::change_position(int x, int y){
     delete this->shoot;
     this->shoot = new button(this->x + 115, y, 30, 15, BLUE, "SHOOT", 20);
 }
+
+int weapon::get_attack(){
+    return this->attack;
+}
+
+int weapon::get_damage(){
+    return this->damage;
+}
 // void weapon::change_inventory(){
 //     this->height = 30;
 // }
