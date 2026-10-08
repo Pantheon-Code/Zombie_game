@@ -38,6 +38,7 @@ int main(){
         // change_player_menu1.draw();
         EndDrawing();
     }
+    inventory1.change_file();
 
     CloseWindow();
 }

@@ -48,3 +48,16 @@ void item::draw(){
     DrawRectangle(this->x, this->y, this->width, this->height, this->color);
     DrawText(TextFormat("%s" ,this->name.c_str()), this->x, this->y, 20, WHITE);
 }
+
+void item::change_file(ofstream & myFile){
+    myFile << this->item_type << ',' << this->name << ',' << this->space << '\n';
+}
+
+item * item::read_file(stringstream & ss){
+    string name;
+    getline(ss, name, ',');
+    string space;
+    getline(ss, space, ',');
+    item * new_item = new item(0, 0, stoi(space), name);
+    return new_item;
+}

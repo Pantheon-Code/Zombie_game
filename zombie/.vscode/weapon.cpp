@@ -55,6 +55,11 @@ item_node * weapon::reload(item_node * item_head, inventory * inventory1){
     }
     return nullptr;
 }
+
+void weapon::set_ammo(int ammo_amount){
+    this->ammo_amount = ammo_amount;
+}
+
 void weapon::change_position(int x, int y){
     item::change_position(x, y);
     delete this->shoot;
@@ -81,4 +86,25 @@ void weapon::draw(){
     DrawText(TextFormat("%s: %s: %i" ,this->name.c_str(), this->ammo_type.c_str(), this->ammo_amount), this->x, this->y, 20, WHITE);
     // DrawText(TextFormat("%s: %i" ,this->ammo_type.c_str(), this->ammo_amount), this->x + this->width - 15, this->y, 20, WHITE);
 
+}
+
+void weapon::change_file(ofstream & myFile){
+    myFile << this->item_type << ',' << this->name << ',' << this->space << ',' << this->attack << ',' 
+        << this->damage << ',' << this->ammo_amount << '\n';
+}
+
+weapon * weapon::read_file(stringstream & ss){
+    string name;
+    getline(ss, name, ',');
+    string space;
+    getline(ss, space, ',');
+    string attack;
+    getline(ss, attack, ',');
+    string damage;
+    getline(ss, damage, ',');
+    weapon * new_weapon = new weapon(0, 0, stoi(space), name, stoi(attack), stoi(damage));
+    string ammo_amount;
+    getline(ss, ammo_amount, ',');
+    new_weapon->set_ammo(stoi(ammo_amount));
+    return new_weapon;
 }

@@ -3,6 +3,8 @@
 #include "number_input.h"
 #include "text_input.h"
 #include "button.h"
+#include <fstream>
+#include <sstream>
 
 class weapon;
 class item;
@@ -16,10 +18,14 @@ class inventory{
         * thirst_quenched = nullptr;
     item_node * item_head = nullptr, * item_tail = nullptr;
     button * add_button = nullptr, * delete_button = nullptr;
+    string inventory_file = "csv_files/inventory_file.csv";
     public:
     inventory();
     void update();
+    void read_file();
+    void change_file();
     void add_item();
+    void add_item(item_node * new_item);
     void delete_item();
     void shift_items(int item_height, item_node * dummy_ptr1);
     void remove_item();

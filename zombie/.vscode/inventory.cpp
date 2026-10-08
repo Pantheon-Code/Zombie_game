@@ -13,6 +13,7 @@ inventory::inventory(){
     this->thirst_quenched = new number_input(Rectangle{(float)this->x + 460, (float)this->y, 50, 20});
     this->add_button = new button(x + 525, y, 30, 15, GREEN, "ADD", 20);
     this->delete_button = new button(x + 570, y, 30, 15, RED, "DELETE", 20);
+    this->read_file();
 }
 
 void inventory::update(){
@@ -28,6 +29,49 @@ void inventory::update(){
     if(this->delete_button->update(GetMousePosition())){
         this->delete_item();
     }
+}
+
+void inventory::read_file(){
+    ifstream myFile(this->inventory_file);
+    if(myFile.is_open()){
+        string line;
+        while(getline(myFile, line)){
+            stringstream ss(line);
+            string item_type;
+            getline(ss, item_type, ',');
+            item * new_item;
+            if(item_type == "item"){
+                new_item = item::read_file(ss);
+            }
+            else if(item_type == "weapon"){
+                new_item = weapon::read_file(ss);
+            }
+            else if(item_type == "ammo"){
+                new_item = ammo::read_file(ss);
+            }
+            else if(item_type == "food"){
+                new_item = food::read_file(ss);
+            }
+            else new_item = water::read_file(ss);
+            item_node * new_item_node = new item_node;
+            new_item_node->item_stored = new_item;
+            this->add_item(new_item_node);
+        }
+    }
+}
+
+void inventory::change_file(){
+    item_node * dummy_node = this->item_head;
+    ofstream myFile(this->inventory_file);
+    if(myFile.is_open()){
+        while(dummy_node){
+            item * dummy_item = dummy_node->item_stored;
+            dummy_item->change_file(myFile);
+            dummy_node = dummy_node->next_item;
+        }
+        
+    }
+    myFile.close();
 }
 
 void inventory::add_item(){
@@ -64,6 +108,19 @@ void inventory::add_item(){
     }
 }
 
+void inventory::add_item(item_node * new_item){
+    new_item->item_stored->change_position(this->x, this->next_item_position);
+    
+    next_item_position += new_item->item_stored->get_height() + 5;
+    if(!this->item_head){
+        this->item_head = new_item;
+        this->item_tail = new_item;
+    }
+    else{
+    this->item_tail->next_item = new_item;
+    this->item_tail = this->item_tail->next_item;
+    }
+}
 
 void inventory::delete_item(){
     if(!this->item_head) return;

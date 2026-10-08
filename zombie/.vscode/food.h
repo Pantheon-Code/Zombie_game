@@ -11,5 +11,8 @@ class food : public item{
         bool pressed();
         int get_hunger_restored();
         void shift(int y) override;
+        void change_position(int x, int y) override;
         void draw() override;
+        virtual void change_file(ofstream & myFile) override;
+        static food * read_file(stringstream & ss);
 };

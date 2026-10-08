@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include "raylib.h"
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 class item{
@@ -23,4 +25,6 @@ class item{
     string get_item_type();
     virtual void shift(int y);
     virtual void draw();
+    virtual void change_file(ofstream & myFile);
+    static item * read_file(stringstream & ss);
 };
