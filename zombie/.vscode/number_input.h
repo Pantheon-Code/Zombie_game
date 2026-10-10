@@ -1,6 +1,8 @@
 #pragma once
 #include "raylib.h"
+#include <iostream>
 
+using namespace std;
 
 class number_input{
     private:
@@ -11,8 +13,10 @@ class number_input{
     int letter_count = 0;
     int key;
     int frame_counter = 0;
+    string name = "";
     public:
     number_input(Rectangle text_box);
+    number_input(Rectangle text_box, string name);
     char * get_edit_input();
     void delete_text();
     void update();

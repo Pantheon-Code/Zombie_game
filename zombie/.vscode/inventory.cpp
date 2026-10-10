@@ -6,23 +6,23 @@
 
 inventory::inventory(){
     this->item_name = new text_input(Rectangle{(float)this->x, (float)this->y, 185, 20});
-    this->item_space = new number_input(Rectangle{(float)this->x + 200, (float)this->y, 50, 20});
-    this->attack_roll = new number_input(Rectangle{(float)this->x + 265, (float)this->y, 50, 20});
-    this->amount = new number_input(Rectangle{(float)this->x + 330, (float)this->y, 50, 20});
-    this->hunger_restored = new number_input(Rectangle{(float)this->x + 395, (float)this->y, 50, 20});
-    this->thirst_quenched = new number_input(Rectangle{(float)this->x + 460, (float)this->y, 50, 20});
-    this->add_button = new button(x + 525, y, 30, 15, GREEN, "ADD", 20);
-    this->delete_button = new button(x + 570, y, 30, 15, RED, "DELETE", 20);
+    int x_placement = this->x + 200;
+    for(int i = 0; i < this->number_input_names.size(); i++){
+        this->number_input_list.push_back(new number_input(Rectangle{(float)x_placement, (float)this->y, 50, 20}, 
+            this->number_input_names[i]));
+        x_placement += 65;
+    }
+    this->add_button = new button(x_placement, y, 30, 15, GREEN, "ADD", 20);
+    x_placement += 45;
+    this->delete_button = new button(x_placement, y, 30, 15, RED, "DELETE", 20);
     this->read_file();
 }
 
 void inventory::update(){
     this->item_name->update();
-    this->item_space->update();
-    this->attack_roll->update();
-    this->amount->update();
-    this->hunger_restored->update();
-    this->thirst_quenched->update();
+    for(int i = 0; i < this->number_input_names.size(); i++){
+        this->number_input_list[i]->update();
+    }
     if(this->add_button->update(GetMousePosition())){
         this->add_item();
     }
@@ -79,25 +79,24 @@ void inventory::change_file(){
 void inventory::add_item(){
     item_node * new_item = new item_node;
     string new_item_name = this->item_name->get_edit_input();
-    int new_item_space = atoi(this->item_space->get_edit_input());
-    int new_item_attack = atoi(this->attack_roll->get_edit_input());
-    int new_item_amount = atoi(this->amount->get_edit_input());
-    int new_item_hunger_restored = atoi(this->hunger_restored->get_edit_input());
-    int new_item_thirst_quenched = atoi(this->thirst_quenched->get_edit_input());
+    unordered_map<string, int> new_item___;
+    for(int i = 0; i < this->number_input_names.size(); i++){
+        new_item___.emplace(this->number_input_names[i], atoi(this->number_input_list[i]->get_edit_input()));
+    }
 
-    if(new_item_thirst_quenched){
-        new_item->item_stored = new water(this->x, next_item_position, new_item_space, new_item_name, new_item_thirst_quenched);
+    if(new_item___["Thirst"]){
+        new_item->item_stored = new water(this->x, next_item_position, new_item___["Space"], new_item_name, new_item___["Thirst"]);
     }
-    else if(new_item_hunger_restored){
-        new_item->item_stored = new food(this->x, next_item_position, new_item_space, new_item_name, new_item_hunger_restored);
+    else if(new_item___["Hunger"]){
+        new_item->item_stored = new food(this->x, next_item_position, new_item___["Space"], new_item_name, new_item___["Hunger"]);
     }
-    else if(new_item_amount){
-        new_item->item_stored = new ammo(this->x, next_item_position, new_item_space, new_item_name, new_item_amount);
+    else if(new_item___["Amount"]){
+        new_item->item_stored = new ammo(this->x, next_item_position, new_item___["Space"], new_item_name, new_item___["Amount"]);
     }
-    else if(new_item_attack){
-        new_item->item_stored = new weapon(this->x, next_item_position, new_item_space, new_item_name, new_item_attack, 0);
+    else if(new_item___["Attack"]){
+        new_item->item_stored = new weapon(this->x, next_item_position, new_item___["Space"], new_item_name, new_item___["Attack"], 0);
     }
-    else new_item->item_stored = new item(this->x, next_item_position, new_item_space, new_item_name);
+    else new_item->item_stored = new item(this->x, next_item_position, new_item___["Space"], new_item_name);
     
     next_item_position += new_item->item_stored->get_height() + 5;
     if(!this->item_head){
@@ -204,18 +203,11 @@ int inventory::get_next_item_position(){
 
 void inventory::draw(){
     DrawText(TextFormat("Weapon Name"), this->x, this->y - 20, 15, WHITE);
-    DrawText(TextFormat("Space"), this->x + 200, this->y - 20, 15, WHITE);
-    DrawText(TextFormat("Attack"), this->x + 265, this->y - 20, 15, WHITE);
-    DrawText(TextFormat("Amount"), this->x + 325, this->y - 20, 15, WHITE);
-    DrawText(TextFormat("Hunger"), this->x + 395, this->y - 20, 15, WHITE);
-    DrawText(TextFormat("Thirst"), this->x + 460, this->y - 20, 15, WHITE);
-    DrawText(TextFormat("Inventory"), this->x, this->y - 50, 15, WHITE);
     this->item_name->draw();
-    this->item_space->draw();
-    this->attack_roll->draw();
-    this->amount->draw();
-    this->hunger_restored->draw();
-    this->thirst_quenched->draw();
+    DrawText(TextFormat("Inventory"), this->x, this->y - 40, 15, WHITE);
+    for(int i = 0; i < this->number_input_names.size(); i++){
+        this->number_input_list[i]->draw();
+    }
     this->add_button->draw();
     this->delete_button->draw();
     this->draw_items();
@@ -224,16 +216,10 @@ void inventory::draw(){
 inventory::~inventory(){
     delete this->item_name;
     this->item_name = nullptr;
-    delete this->item_space;
-    this->item_space = nullptr;
-    delete this->attack_roll;
-    this->attack_roll = nullptr;
-    delete this->amount;
-    this->amount = nullptr;
-    delete this->hunger_restored;
-    this->hunger_restored = nullptr;
-    delete this->thirst_quenched;
-    this->thirst_quenched = nullptr;
+    for(number_input *& number_input1 : number_input_list){
+        delete number_input1;
+        number_input1 = nullptr;
+    }
     delete this->add_button;
     this->add_button = nullptr;
     delete this->delete_button;

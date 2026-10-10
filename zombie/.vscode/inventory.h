@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 
+
 class weapon;
 class item;
 class food;
@@ -14,9 +15,9 @@ class water;
 class inventory{
     int x = 15, y = 200, next_item_position = 225;
     text_input * item_name = nullptr;
-    number_input * item_space = nullptr, * attack_roll = nullptr, * amount = nullptr, * hunger_restored = nullptr,
-        * thirst_quenched = nullptr;
+    vector<string> number_input_names = {"Space", "Attack", "Amount", "Hunger", "Thirst"};
     item_node * item_head = nullptr, * item_tail = nullptr;
+    vector<number_input*> number_input_list;
     button * add_button = nullptr, * delete_button = nullptr;
     string inventory_file = "csv_files/inventory_file.csv";
     public:

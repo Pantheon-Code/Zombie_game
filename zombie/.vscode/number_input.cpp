@@ -4,6 +4,11 @@ number_input::number_input(Rectangle text_box){
     this->text_box = text_box;
 }
 
+number_input::number_input(Rectangle text_box, string name){
+    this->text_box = text_box;
+    this->name = name;
+}
+
 char * number_input::get_edit_input(){
     return this->edit_input;
 }
@@ -55,5 +60,8 @@ void number_input::draw(){
             if (((this->frame_counter/20)%2) == 0) DrawText("_", (int)this->text_box.x + 2 + MeasureText(this->edit_input, 20), (int)this->text_box.y + 2, 20, MAROON);
         }
        // else DrawText("Press BACKSPACE to delete chars...", 230, 300, 20, GRAY);
+    }
+    if(!this->name.empty()){
+        DrawText(TextFormat("%s", this->name.c_str()), this->text_box.x, this->text_box.y - 20, 15, WHITE);
     }
 }
