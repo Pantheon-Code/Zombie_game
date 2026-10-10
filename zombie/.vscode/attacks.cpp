@@ -2,6 +2,7 @@
 #include <iterator>
 
 attacks::attacks(inventory * inventory1){
+    this->x = inventory1->get_x_placement();
     this->weapon_input = new text_input(Rectangle{(float)this->x, (float)this->y, 185, 20});
     this->equip_button = new button(x + 200, y, 30, 15, GREEN, "Equip", 20);
     this->unequip_button = new button(x + 245, y, 30, 15, GREEN, "UnEquip", 20);

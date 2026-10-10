@@ -14,8 +14,9 @@ class water;
 
 class inventory{
     int x = 15, y = 200, next_item_position = 225;
-    text_input * item_name = nullptr;
-    vector<string> number_input_names = {"Space", "Attack", "Amount", "Hunger", "Thirst"};
+    int x_placement;
+    text_input * item_name = nullptr, * ammo_type = nullptr;
+    vector<string> number_input_names = {"Space", "Attack", "Amount", "Hunger", "Thirst", "Ammo"};
     item_node * item_head = nullptr, * item_tail = nullptr;
     vector<number_input*> number_input_list;
     button * add_button = nullptr, * delete_button = nullptr;
@@ -37,6 +38,7 @@ class inventory{
     item_node * get_item_head();
     item_node * get_item_tail();
     int get_next_item_position();
+    int get_x_placement();
     void draw();
     ~inventory();
 };

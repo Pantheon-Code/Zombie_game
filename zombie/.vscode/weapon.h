@@ -11,9 +11,9 @@ class weapon : public item{
         int attack, damage;
         int ammo_amount = 0;
         button * shoot;
-        string ammo_type = "9mm";
+        string ammo_type;
     public:
-        weapon(int x, int y, int space, string name, int attack, int damage);
+        weapon(int x, int y, int space, string name, int attack, int damage, string ammo_type);
         void change_position(int x, int y) override;
         // void change_deleted(bool new_deleted);
         // bool get_deleted();

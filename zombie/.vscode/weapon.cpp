@@ -2,12 +2,12 @@
 #include "inventory.h"
 #include "ammo.h"
 
-weapon::weapon(int x, int y, int space, string name, int attack, int damage) : item(x, y, space, name){
-    
+weapon::weapon(int x, int y, int space, string name, int attack, int damage, string ammo_type) : item(x, y, space, name){
     this->attack = attack;
     this->damage = damage;
     this->color = GRAY;
     this->item_type = "weapon";
+    this->ammo_type = ammo_type;
 }
 
 void weapon::update(item_node * item_head, inventory * inventory1){
@@ -16,7 +16,6 @@ void weapon::update(item_node * item_head, inventory * inventory1){
         if(this->ammo_amount <= 0){
             item_node * ammo_node = (this->reload(item_head, inventory1));
             if(ammo_node){
-                cout << "HELLO";
                 ammo * new_ammo = dynamic_cast<ammo*>(ammo_node->item_stored);
                 this->ammo_amount += new_ammo->get_amount();
             }
@@ -88,17 +87,13 @@ int weapon::get_damage(){
 void weapon::draw(){
     item::draw();
     if(!this->in_inventory) this->shoot->draw();
-    // DrawRectangle(this->x, this->y, this->width, this->height, this->color);
-    // DrawText(TextFormat("%s" ,this->name.c_str()), this->x, this->y + 10, 20, WHITE);
     DrawRectangle(this->x, this->y, this->width, this->height, this->color);
     DrawText(TextFormat("%s: %s: %i" ,this->name.c_str(), this->ammo_type.c_str(), this->ammo_amount), this->x, this->y, 20, WHITE);
-    // DrawText(TextFormat("%s: %i" ,this->ammo_type.c_str(), this->ammo_amount), this->x + this->width - 15, this->y, 20, WHITE);
-
 }
 
 void weapon::change_file(ofstream & myFile){
     myFile << this->item_type << ',' << this->name << ',' << this->space << ',' << this->attack << ',' 
-        << this->damage << ',' << this->ammo_amount << '\n';
+        << this->damage << ',' << this->ammo_type << ',' << this->ammo_amount << '\n';
 }
 
 weapon * weapon::read_file(stringstream & ss){
@@ -110,7 +105,9 @@ weapon * weapon::read_file(stringstream & ss){
     getline(ss, attack, ',');
     string damage;
     getline(ss, damage, ',');
-    weapon * new_weapon = new weapon(0, 0, stoi(space), name, stoi(attack), stoi(damage));
+    string ammo_type;
+    getline(ss, ammo_type, ',');
+    weapon * new_weapon = new weapon(0, 0, stoi(space), name, stoi(attack), stoi(damage), ammo_type);
     string ammo_amount;
     getline(ss, ammo_amount, ',');
     new_weapon->set_ammo(stoi(ammo_amount));

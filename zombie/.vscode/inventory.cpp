@@ -6,7 +6,9 @@
 
 inventory::inventory(){
     this->item_name = new text_input(Rectangle{(float)this->x, (float)this->y, 185, 20});
-    int x_placement = this->x + 200;
+    this->x_placement = this->x + 200;
+    this->ammo_type = new text_input(Rectangle{(float)x_placement, (float)this->y, 185, 20});
+    this->x_placement += 200;
     for(int i = 0; i < this->number_input_names.size(); i++){
         this->number_input_list.push_back(new number_input(Rectangle{(float)x_placement, (float)this->y, 50, 20}, 
             this->number_input_names[i]));
@@ -15,11 +17,13 @@ inventory::inventory(){
     this->add_button = new button(x_placement, y, 30, 15, GREEN, "ADD", 20);
     x_placement += 45;
     this->delete_button = new button(x_placement, y, 30, 15, RED, "DELETE", 20);
+    x_placement += 45;
     this->read_file();
 }
 
 void inventory::update(){
     this->item_name->update();
+    this->ammo_type->update();
     for(int i = 0; i < this->number_input_names.size(); i++){
         this->number_input_list[i]->update();
     }
@@ -79,11 +83,13 @@ void inventory::change_file(){
 void inventory::add_item(){
     item_node * new_item = new item_node;
     string new_item_name = this->item_name->get_edit_input();
+    string new_item_ammo_type = this->ammo_type->get_edit_input();
     unordered_map<string, int> new_item___;
     for(int i = 0; i < this->number_input_names.size(); i++){
         new_item___.emplace(this->number_input_names[i], atoi(this->number_input_list[i]->get_edit_input()));
     }
 
+    if(new_item_name.empty()) return;
     if(new_item___["Thirst"]){
         new_item->item_stored = new water(this->x, next_item_position, new_item___["Space"], new_item_name, new_item___["Thirst"]);
     }
@@ -94,7 +100,7 @@ void inventory::add_item(){
         new_item->item_stored = new ammo(this->x, next_item_position, new_item___["Space"], new_item_name, new_item___["Amount"]);
     }
     else if(new_item___["Attack"]){
-        new_item->item_stored = new weapon(this->x, next_item_position, new_item___["Space"], new_item_name, new_item___["Attack"], 0);
+        new_item->item_stored = new weapon(this->x, next_item_position, new_item___["Space"], new_item_name, new_item___["Attack"], 0, new_item_ammo_type);
     }
     else new_item->item_stored = new item(this->x, next_item_position, new_item___["Space"], new_item_name);
     
@@ -204,6 +210,8 @@ int inventory::get_next_item_position(){
 void inventory::draw(){
     DrawText(TextFormat("Weapon Name"), this->x, this->y - 20, 15, WHITE);
     this->item_name->draw();
+    DrawText(TextFormat("Ammo Type"), this->x + 200, this->y - 20, 15, WHITE);
+    this->ammo_type->draw();
     DrawText(TextFormat("Inventory"), this->x, this->y - 40, 15, WHITE);
     for(int i = 0; i < this->number_input_names.size(); i++){
         this->number_input_list[i]->draw();
@@ -213,9 +221,15 @@ void inventory::draw(){
     this->draw_items();
 }
 
+int inventory::get_x_placement(){
+    return this->x_placement;
+}
+
 inventory::~inventory(){
     delete this->item_name;
     this->item_name = nullptr;
+    delete this->ammo_type;
+    this->ammo_type = nullptr;
     for(number_input *& number_input1 : number_input_list){
         delete number_input1;
         number_input1 = nullptr;
