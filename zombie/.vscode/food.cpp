@@ -6,6 +6,8 @@ food::food(int x, int y, int space, string name, int hunger_restored) : item(x, 
     this->color = GREEN;
     this->item_type = "food";
     this->eat = new button(this->x + this->width + 15, this->y, 50.0f, 20.0f, GREEN, "Eat", 20.0f);
+    string text_to_measure = this->name + ": HR: " + to_string(this->hunger_restored) + "  ";
+    this->width = MeasureText(text_to_measure.c_str(), 20);
 }
 
 bool food::pressed(){
@@ -19,13 +21,13 @@ int food::get_hunger_restored(){
 void food::shift(int y){
     item::shift(y);
     delete this->eat;
-    this->eat = new button(this->x + this->width + 15, this->y, 50.0f, 20.0f, GREEN, "Eat", 20.0f);
+    this->eat = new button((float)this->x + this->width + 15, (float)this->y, 50.0f, 20.0f, GREEN, "Eat", 20.0f);
 }
 
 void food::change_position(int x, int y){
     item::change_position(x,y);
     delete this->eat;
-    this->eat = new button(this->x + this->width + 15, this->y, 50.0f, 20.0f, GREEN, "Eat", 20.0f);
+    this->eat = new button((float)this->x + this->width + 15, (float)this->y, 50.0f, 20.0f, GREEN, "Eat", 20.0f);
 }
 
 void food::draw(){

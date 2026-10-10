@@ -7,7 +7,7 @@ class button;
 class water: public item{
     private:
         int thirst_quenched;
-        button * drink;
+        button * drink = nullptr;
     public:
         water(int x, int y, int space, string name, int thirst_quenched);
         bool pressed();

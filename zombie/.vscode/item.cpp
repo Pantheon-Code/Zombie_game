@@ -6,6 +6,8 @@ item::item(int x, int y, int space, string name){
     this->x = x;
     this->y = y;
     this->get_out_inventory();
+    this->width = MeasureText(name.c_str(), 20);    
+    
 }
 
 string item::get_name(){

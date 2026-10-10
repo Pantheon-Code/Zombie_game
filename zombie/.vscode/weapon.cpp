@@ -8,6 +8,8 @@ weapon::weapon(int x, int y, int space, string name, int attack, int damage, str
     this->color = GRAY;
     this->item_type = "weapon";
     this->ammo_type = ammo_type;
+    string text_to_measure = this->name + ": " + this->ammo_type + ": " + to_string(this->ammo_amount) + "  ";
+    this->width = MeasureText(text_to_measure.c_str(), 20);
 }
 
 void weapon::update(item_node * item_head, inventory * inventory1){
@@ -62,7 +64,7 @@ void weapon::set_ammo(int ammo_amount){
 void weapon::change_position(int x, int y){
     item::change_position(x, y);
     delete this->shoot;
-    this->shoot = new button(this->x + 115, y, 30, 15, BLUE, "SHOOT", 20);
+    this->shoot = new button(this->x + this->width + 15, y, 30, 15, BLUE, "SHOOT", 20);
 }
 
 int weapon::get_attack(){

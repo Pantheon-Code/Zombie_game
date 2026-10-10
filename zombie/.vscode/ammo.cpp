@@ -4,6 +4,8 @@ ammo::ammo(int x, int y, int space, string name, int amount) : item(x, y, space,
     this->amount = amount;
     this->color = ORANGE;
     this->item_type = "ammo";
+    string text_to_measure = this->name + ": Amouny: " + to_string(this->amount) + "  ";
+    this->width = MeasureText(text_to_measure.c_str(), 20);
 }
 
 int ammo::get_amount(){
@@ -11,8 +13,8 @@ int ammo::get_amount(){
 }
 
 void ammo::draw(){
-    item::draw();
-    DrawText(TextFormat("Amount: %i", this->amount), this->x + this->width - 10, this->y, 20, WHITE);
+    DrawRectangle(this->x, this->y, this->width, this->height, this->color);
+    DrawText(TextFormat("%s: Amount: %i" ,this->name.c_str(), this->amount), this->x, this->y, 20, WHITE);
 }
 
 void ammo::change_file(ofstream & myFile){
